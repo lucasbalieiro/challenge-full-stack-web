@@ -9,6 +9,27 @@ studentRouter.get('/', async (request, response) => {
     return response.json(students);
 });
 
+studentRouter.get('/:ra', async (request, response) => {
+    const { ra } = request.params;
+
+    const student = await Student.findOne({ where: { ra } });
+
+    return response.json(student);
+});
+
+studentRouter.patch('/:ra', async (request, response) => {
+    const { ra } = request.params;
+    const { nome, email } = request.body;
+
+    const student = await Student.findOne({ where: { ra } });
+    student.nome = nome;
+    student.email = email;
+
+    const updatedStudent = await student.save();
+
+    return response.json(updatedStudent);
+});
+
 studentRouter.post('/', async (request, response) => {
     const { nome, cpf, email } = request.body;
 
