@@ -21,4 +21,15 @@ studentRouter.post('/', async (request, response) => {
     return response.status(201).json(student);
 });
 
+studentRouter.delete('/:ra', async (request, response) => {
+    const { ra } = request.params;
+    const totalLines = await Student.destroy({ where: { ra } });
+    return response.json(
+        {
+            message: 'Aluno excluido com sucesso',
+            totalLines,
+        },
+    );
+});
+
 module.exports = studentRouter;
