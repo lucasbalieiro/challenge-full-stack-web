@@ -10,12 +10,16 @@ studentRouter.get('/', async (request, response) => {
 });
 
 studentRouter.post('/', async (request, response) => {
-    const {
-        ra, nome, cpf, email,
-    } = request.body;
+    const { nome, cpf, email } = request.body;
+
+    const studentByCpf = await Student.findOne({ where: { cpf } });
+
+    if (studentByCpf != null) {
+        return response.status(400).json({ message: 'CPF já cadastrado no sistema' });
+    }
 
     const student = await Student.create({
-        ra, nome, cpf, email,
+        nome, cpf, email,
     });
 
     return response.status(201).json(student);
